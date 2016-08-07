@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type='text/javascript' src='chroma.js'></script>
+        <script type='text/javascript' src='tinycolor.js'></script>
+    </head>
+    <body>
+        <div class="operation">
+            Key Color # : <input type="text" id="key" size="5" maxlength="7" value="0cbdc6" oninput="find();"/>&nbsp;
+            Sub Color # : <input type="text" id="sub" size="5" maxlength="7" value="0c60c6" oninput="find();"/>&nbsp;            
+            <br>
+            <br>
+        </div>
+        <div class="controller">
+            variable L : <input type="text" id="lchl" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
+            C : <input type="text" id="lchc" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
+            H : <input type="text" id="lchh" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
+            <input type="button" id="exe" value="Start" onclick="find();"/>&nbsp;
+            <br>
+            <br>
+        </div>
+        
+        <table border="0" cellspacing="0">
+            <tr>
+                <td class="display" valign="middle">Key Color<br>(Original)</td>
+                <td class="display" name="rect" valign="middle"></td>
+            </tr>
+            <tr height="5"></tr>
+            <tr>
+                <td class="display" valign="middle">Sub Color<br>(Original)</td>
+                <td class="display" name="rect" valign="middle"></td>
+            </tr>
+            <tr height="10"></tr>
+        </table>
+        
+        <h3>Variation</h3>
+        <table border="0" cellspacing="10">
+            <tr>
+                <td class="key" name="keycolor" valign="middle"></td>
+                <td class="key" name="keycolor" valign="middle"></td>
+                <td class="key" name="keycolor" valign="middle"></td>
+                <td class="key" name="keycolor" valign="middle"></td>
+                <td class="key" name="keycolor" valign="middle"></td>
+
+            </tr>
+            <tr>
+                <td class="sub" name="variation" valign="middle"></td>
+                <td class="sub" name="variation" valign="middle"></td>
+                <td class="sub" name="variation" valign="middle"></td>
+                <td class="sub" name="variation" valign="middle"></td>
+                <td class="sub" name="variation" valign="middle"></td>
+
+            </tr>
+        </table>
+        
+        
+        <script type="text/javascript">
+
+            function find() {
+                //텍스트박스의 값을 가져옴(읽어들임)
+                var key = document.getElementById("key").value;
+                var sub = document.getElementById("sub").value;
+                
+                var varL = document.getElementById("lchl").value;
+                var varC = document.getElementById("lchc").value;
+                var varH = document.getElementById("lchh").value;
+                
+                //tinycolor로 간단히 변환
+                var keyColor = tinycolor(key);
+                var subOriginColor = tinycolor(sub);
+                
+                changeBG('rect', 0, keyColor.toHexString());
+                changeBG('rect', 1, subOriginColor.toHexString());
+                
+                //color variation 만드는 부분
+                //이부분은 나중에 function으로 다시 만들것                
+                var varInt = 2;
+                
+                var sub01Hexa = changeSub(subOriginColor.toHexString(), -(varL*varInt), -(varC*varInt), -(varH*varInt));
+                var sub02Hexa = changeSub(subOriginColor.toHexString(), -varL, -varC, -varH);
+                var sub03Hexa = changeSub(subOriginColor.toHexString(), +varL, +varC, +varH);                
+                var sub04Hexa = changeSub(subOriginColor.toHexString(), varL*varInt, varC*varInt, varH*varInt);
+                
+                //original sub color
+                changeBG('variation', 2, subOriginColor.toHexString());
+                
+                //변경된 색상
+                changeBG('variation', 0, sub01Hexa);
+                changeBG('variation', 1, sub02Hexa);
+                changeBG('variation', 3, sub03Hexa);                
+                changeBG('variation', 4, sub04Hexa);
+                //이부분은 나중에 function으로 다시                
+                
+            }
+            
+                        
+            // 나중에 라이브러리를 수정했을 때를 대비해서 헥사를 받아서 헥사를 리턴해야겠다
+            function changeSub(fromColorHexa, varL, varC, varH){
+                var subOrigin = chroma(fromColorHexa);
+                var toColorHexa = subOrigin;
+                
+                //아래 방법은 동작 안됨 ㅜㅜ...
+                //toColorHexa.set('lch.l', +varL);
+                //toColorHexa.set('lch.c', +varC);
+                //toColorHexa.set('lch.h', +varH);
+                
+                var originL = subOrigin.get('lch.l');
+                var originC = subOrigin.get('lch.c');
+                var originH = subOrigin.get('lch.h');
+                
+                var newL = originL + varL;
+                var newC = originC + varC;
+                var newH = originH + varH;
+                
+                toColorHexa = chroma(newL, newC, newH, 'lch');
+                
+                return toColorHexa.hex();                
+            }
+            
+            function changeBG(name,i,colorName){
+                var obj = document.getElementsByName(name)[i];
+                obj.style.backgroundColor = colorName;
+                obj.innerHTML = colorName;
+            }
+    
+        </script>
+    </body>
+</html>
