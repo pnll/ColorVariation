@@ -21,7 +21,7 @@
                 </tr>
                 <tr>
                     <td>Background : </td>
-                    <td># <input type="text" id="bg" size="5" maxlength="7" value="ffffff" oninput="find();"/></td>
+                    <td># <input type="text" id="bg" size="5" maxlength="7" value="eeeeee" oninput="find();"/></td>
                     <td name="preview" class="depth"></td>
                 </tr>
             </table>
@@ -29,10 +29,13 @@
 
         <h5>Input variable</h5>
         <div class="controller">
-            L : <input type="text" id="lchl" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
-            C : <input type="text" id="lchc" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
-            H : <input type="text" id="lchh" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
+            L : <input type="text" id="lchl" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
+            C : <input type="text" id="lchc" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
+            H : <input type="text" id="lchh" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
             <!--<input type="button" id="exe" value="Start" onclick="find();"/>&nbsp; //-->
+            <br>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="reverse" value="L" onchange="find();">Reverse
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" name="reverse" value="C" onchange="find();">Reverse
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" name="reverse" value="H" onchange="find();">Reverse
             <br>
             <br>
         </div>
@@ -50,11 +53,11 @@
                 <td class="depth key" name="keycolor" valign="middle"></td>
             </tr>
             <tr>
-                <td class="depth sub off" name="variation" valign="middle"  onclick="save('6')"></td>
-                <td class="depth sub off" name="variation" valign="middle"  onclick="save('7')"></td>
-                <td class="depth sub off" name="variation" valign="middle"  onclick="save('8')"></td>
-                <td class="depth sub off" name="variation" valign="middle"  onclick="save('9')"></td>
-                <td class="depth sub off" name="variation" valign="middle"  onclick="save('10')"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(6,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(7,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(8,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(9,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(10,1)"></td>
             </tr>
             <tr>
                 <td class="depth sub" name="variText" valign="middle"></td>
@@ -74,7 +77,20 @@
                 find();
             }
             
-            function save(i) {
+            var count = 0;
+            var saved = [];
+            
+            function save(i,flag) {
+                var storage = document.getElementById('saved');
+                if(flag==0){
+                    //saved.splice(i,1);
+                    saved[i] = ""; //delete
+                    storage.innerHTML = "";
+                    for(var i in saved) {
+                        storage.innerHTML += saved[i];
+                    }
+                }
+                else {
                 var table = document.getElementById('colorVariation');
                 var tdArr = table.getElementsByTagName('td');
                 tdArr[i].className = (tdArr[i].className == 'depth sub off' ? 'depth sub on' : 'depth sub off');
@@ -88,7 +104,21 @@
                 var bgColorText = chroma(bgColor).get('lch.l') < 70 ? 'white' : 'black';
                 
                 if(tdArr[i].className=='depth sub on'){
-                    document.getElementById('saved').innerHTML+="<div name='savedBG' style='text-align:center; width:100px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding:10px;'>                <span name='savedBGText'>"+bgColor.substring(1,7)+"</span>                <div class='saved' name='savedKey' style='background-color:"+keyColor+";'></div>                <div class='saved on' name='savedSub' style='background-color:"+clickedColor+";'></div>           <span name='savedSubText'>"+clickedColor.substring(1,7)+"</span>            </div>";
+                    saved[count] = "<div name='savedBG' style='text-align:center; width:100px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding:10px;'>\
+                    <span name='savedBGText'>"+bgColor.substring(1,7)+"</span>\
+                    <div class='saved' name='savedKey' style='background-color:"+keyColor+";'></div>\
+                    <div class='saved on' name='savedSub' style='background-color:"+clickedColor+";' onclick='save("+count+",0)'></div>\
+                    <span name='savedSubText'>"+clickedColor.substring(1,7)+"</span>\
+                    </div>";
+                    
+                    var html = new String;
+                    for(var i in saved) {
+                        html += saved[i];
+                    }
+                    document.getElementById('saved').innerHTML = html;
+                    count++; //save순서(배열번호) 기억
+                }
+
                 }
             }
 
@@ -117,13 +147,26 @@
                 
                 changeBG('preview', 0, keyColor.toHexString(), 0);
                 changeBG('preview', 1, subOriginColor.toHexString(), 0);
+                changeBG('preview', 2, bgColor.toHexString(), 0);
                 var table = document.getElementsByName('CV')[0];
                 table.style.backgroundColor = bgColor;
                 
                 //color variation 만드는 부분
                 //이부분은 나중에 function으로 다시 만들것                
                 var varInt = 2;
+                var revL = 1;
+                var revC = 1;
+                var revH = 1;
                 
+                if(document.getElementsByName('reverse')[0].checked) {
+                    revL = -1;
+                }
+                if(document.getElementsByName('reverse')[1].checked) {
+                    revC = -1;
+                }
+                if(document.getElementsByName('reverse')[2].checked) {
+                    revH = -1;
+                }
                 /*
                 var sub01Hexa = changeSub(subOriginColor.toHexString(), -(varL*varInt), -(varC*varInt), -(varH*varInt));
                 var sub02Hexa = changeSub(subOriginColor.toHexString(), -varL, -varC, -varH);
@@ -131,10 +174,10 @@
                 var sub04Hexa = changeSub(subOriginColor.toHexString(), varL*varInt, varC*varInt, varH*varInt);
                 */
                 var subHex = [];
-                subHex[0] = changeSub(subOriginColor.toHexString(), -(varL*varInt), -(varC*varInt), -(varH*varInt));
-                subHex[1] = changeSub(subOriginColor.toHexString(), -varL, -varC, -varH);
-                subHex[3] = changeSub(subOriginColor.toHexString(), +varL, +varC, +varH);                
-                subHex[4] = changeSub(subOriginColor.toHexString(), varL*varInt, varC*varInt, varH*varInt);
+                subHex[0] = changeSub(subOriginColor.toHexString(), -(varL*varInt)*revL, -(varC*varInt)*revC, -(varH*varInt)*revH);
+                subHex[1] = changeSub(subOriginColor.toHexString(), -varL*revL, -varC*revC, -varH*revH);
+                subHex[3] = changeSub(subOriginColor.toHexString(), varL*revL, varC*revC, varH*revH);                
+                subHex[4] = changeSub(subOriginColor.toHexString(), varL*varInt*revL, varC*varInt*revC, varH*varInt*revH);
                 
                 //original sub color
                 subHex[2] = subOriginColor.toHexString();
