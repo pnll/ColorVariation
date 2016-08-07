@@ -16,9 +16,8 @@
         <div id="media-768"></div>
         <div id="media-1024"></div>
         <div id="media-1025"></div>
-        
         <span class="subject">Automated color variation</span>
-        <div class="operation">
+        <div class="operation"> <!-- style="border-bottom:1px solid rgba(0,0,0,0.2);"> -->
             <table class="mobile" border="0" cellspacing="5">
                 <tr>
                     <td>Key Color : </td>
@@ -42,7 +41,7 @@
         </div>
 
         <span class="subject">Change sub color by</span>
-        <div class="controller">
+        <div class="operation">
             <table border="0" cellpadding="2">
                 <tr>
                     <td>L(명도) : <input type="number" id="lchl" maxlength="3" value="5" oninput="find();"/></td>
@@ -57,7 +56,6 @@
             </table>
             <!--<input type="button" id="exe" value="Start" onclick="find();"/>&nbsp; //-->
         </div>
-        <br>
 
         <span class="subject">Color Variation</span>
         <table id="colorVariation" name="CV" border="0" cellpadding="5" style="border-spacing:10px 0;">
@@ -96,7 +94,6 @@
                 <td name="bgcolor" colspan="5" valign="middle" style="text-align: center;">bgColor</td>
             </tr>
         </table>
-        <br>
         <span id="savedTitle" class="subject"></span>
         <div id="saved">
         </div>
@@ -140,11 +137,17 @@
                 var storage = document.getElementById('saved');
                 if(flag==0){
                     //saved.splice(i,1);
+                    var deleteDiv = document.getElementsByName('savedBG')[i];
+                    //deleteDiv.style.display = "none";
+                    $(deleteDiv).fadeOut("slow");
+                    saved[i] = "<div name='savedBG' style='display:none;'></div>"; //hide
+                    /*
                     saved[i] = ""; //delete
                     storage.innerHTML = "";
                     for(var i in saved) {
                         storage.innerHTML += saved[i];
                     }
+                    */
                 }
                 else {
                 var table = document.getElementById('colorVariation');
@@ -158,18 +161,18 @@
                 var clickedColor = tinycolor(clicked).toHexString();
                 var bgColor = tinycolor(bg).toHexString();
                 var bgColorText = chroma(bgColor).get('lch.l') < 70 ? 'white' : 'black';
-                var underLine = chroma(bgColor).get('lch.l') < 70 ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+                var underLine = chroma(bgColor).get('lch.l') < 70 ? '255, 255, 255' : '0, 0, 0';
                 
                 var responsive=100;
                 if(mobile==1) responsive=52;
                     
                 if(tdArr[i].className=='depth sub on'){
-                    saved[count] = "<div name='savedBG' style='text-align:center; width:"+responsive+"px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding-left:"+(mobile==0?10:7)+"px; padding-right:"+(mobile==0?10:7)+"px;'>\
+                    saved[count] = "<div name='savedBG' class='saveDiv' style='text-align:center; width:"+responsive+"px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding-left:"+(mobile==0?10:7)+"px; padding-right:"+(mobile==0?10:7)+"px;'>\
                     <div name='savedBGText' class='saved'>"+keyColor.substring(1,7)+"</div>\
                     <div class='saved' name='savedKey' style='width:"+responsive+"px; background-color:"+keyColor+";'></div>\
                     <div class='saved on' name='savedSub' style='width:"+responsive+"px; background-color:"+clickedColor+";' onclick='save("+count+",0)'></div>\
                     <div name='savedSubText' class='saved'>"+clickedColor.substring(1,7)+"</div>\
-                    <div style='height:20px; border-bottom: 1px solid "+underLine+";'></div>\
+                    <div style='height:20px; border-bottom:1px solid rgba("+underLine+", 0.2);'></div>\
                     <div name='savedBGText' class='saved'>"+bgColor.substring(1,7)+"</div>\
                     </div>";
                     
