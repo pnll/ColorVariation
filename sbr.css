@@ -1,0 +1,29 @@
+body { font-size:10pt; font-family:verdana,tahoma; }
+.display {
+    text-align: center;
+    width: 100px;
+    height: 100px;
+}
+.depth {
+    text-align: center;
+    width: 100px;
+    height: 20px;
+}
+.legend { height: 10px; font-size:8pt; }
+.operation { margin: 10px; }
+.off {
+    background-image: url(img/default.png);
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 18px;
+}
+.on {
+    background-image: url(img/Saved.png);
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-size: 18px;
+}
+.saved {
+    width: 100px;
+    height: 25px;
+}

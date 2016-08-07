@@ -1,65 +1,110 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Color Variation by SBR</title>
+        <link rel="stylesheet" href="sbr.css">
         <script type='text/javascript' src='chroma.js'></script>
         <script type='text/javascript' src='tinycolor.js'></script>
     </head>
     <body>
         <div class="operation">
-            Key Color # : <input type="text" id="key" size="5" maxlength="7" value="0cbdc6" oninput="find();"/>&nbsp;
-            Sub Color # : <input type="text" id="sub" size="5" maxlength="7" value="0c60c6" oninput="find();"/>&nbsp;            
-            <br>
-            <br>
+            <table border="0" cellspacing="10">
+                <tr>
+                    <td>Key Color : </td>
+                    <td># <input type="text" id="key" size="5" maxlength="7" value="0cbdc6" oninput="find();"/></td>
+                    <td name="preview" class="depth"></td>
+                </tr>
+                <tr>
+                    <td>Sub Color : </td>
+                    <td># <input type="text" id="sub" size="5" maxlength="7" value="0c60c6" oninput="find();"/></td>
+                    <td name="preview" class="depth"></td>
+                </tr>
+                <tr>
+                    <td>Background : </td>
+                    <td># <input type="text" id="bg" size="5" maxlength="7" value="ffffff" oninput="find();"/></td>
+                    <td name="preview" class="depth"></td>
+                </tr>
+            </table>
         </div>
+
+        <h5>Input variable</h5>
         <div class="controller">
-            variable L : <input type="text" id="lchl" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
+            L : <input type="text" id="lchl" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
             C : <input type="text" id="lchc" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
             H : <input type="text" id="lchh" size="5" maxlength="7" value="0" oninput="find();"/>&nbsp;
-            <input type="button" id="exe" value="Start" onclick="find();"/>&nbsp;
+            <!--<input type="button" id="exe" value="Start" onclick="find();"/>&nbsp; //-->
             <br>
             <br>
         </div>
         
-        <table border="0" cellspacing="0">
+        <h5>Color Variation</h5>
+        <table id="colorVariation" name="CV" border="0" cellpadding="5" style="border-spacing:10px 0;">
             <tr>
-                <td class="display" valign="middle">Key Color<br>(Original)</td>
-                <td class="display" name="rect" valign="middle"></td>
-            </tr>
-            <tr height="5"></tr>
-            <tr>
-                <td class="display" valign="middle">Sub Color<br>(Original)</td>
-                <td class="display" name="rect" valign="middle"></td>
-            </tr>
-            <tr height="10"></tr>
-        </table>
-        
-        <h3>Variation</h3>
-        <table border="0" cellspacing="10">
-            <tr>
-                <td class="key" name="keycolor" valign="middle"></td>
-                <td class="key" name="keycolor" valign="middle"></td>
-                <td class="key" name="keycolor" valign="middle"></td>
-                <td class="key" name="keycolor" valign="middle"></td>
-                <td class="key" name="keycolor" valign="middle"></td>
-
+                <td name="bgcolor" colspan="5" valign="middle" style="text-align: center;">bgColor</td>
             </tr>
             <tr>
-                <td class="sub" name="variation" valign="middle"></td>
-                <td class="sub" name="variation" valign="middle"></td>
-                <td class="sub" name="variation" valign="middle"></td>
-                <td class="sub" name="variation" valign="middle"></td>
-                <td class="sub" name="variation" valign="middle"></td>
-
+                <td class="depth key" name="keycolor" valign="middle"></td>
+                <td class="depth key" name="keycolor" valign="middle"></td>
+                <td class="depth key" name="keycolor" valign="middle"></td>
+                <td class="depth key" name="keycolor" valign="middle"></td>
+                <td class="depth key" name="keycolor" valign="middle"></td>
+            </tr>
+            <tr>
+                <td class="depth sub off" name="variation" valign="middle"  onclick="save('6')"></td>
+                <td class="depth sub off" name="variation" valign="middle"  onclick="save('7')"></td>
+                <td class="depth sub off" name="variation" valign="middle"  onclick="save('8')"></td>
+                <td class="depth sub off" name="variation" valign="middle"  onclick="save('9')"></td>
+                <td class="depth sub off" name="variation" valign="middle"  onclick="save('10')"></td>
+            </tr>
+            <tr>
+                <td class="depth sub" name="variText" valign="middle"></td>
+                <td class="depth sub" name="variText" valign="middle"></td>
+                <td class="depth sub" name="variText" valign="middle"></td>
+                <td class="depth sub" name="variText" valign="middle"></td>
+                <td class="depth sub" name="variText" valign="middle"></td>
             </tr>
         </table>
         
+        <h5>Saved</h5>
+        <div id="saved">
+        </div>
         
         <script type="text/javascript">
+            window.onload = function() {
+                find();
+            }
+            
+            function save(i) {
+                var table = document.getElementById('colorVariation');
+                var tdArr = table.getElementsByTagName('td');
+                tdArr[i].className = (tdArr[i].className == 'depth sub off' ? 'depth sub on' : 'depth sub off');
+                
+                var key = document.getElementById("key").value;
+                var clicked = tdArr[i].style.backgroundColor;
+                var bg = document.getElementById("bg").value;
+                var keyColor = tinycolor(key).toHexString();
+                var clickedColor = tinycolor(clicked).toHexString();
+                var bgColor = tinycolor(bg).toHexString();
+                var bgColorText = chroma(bgColor).get('lch.l') < 70 ? 'white' : 'black';
+                
+                if(tdArr[i].className=='depth sub on'){
+                    document.getElementById('saved').innerHTML+="<div name='savedBG' style='text-align:center; width:100px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding:10px;'>                <span name='savedBGText'>"+bgColor.substring(1,7)+"</span>                <div class='saved' name='savedKey' style='background-color:"+keyColor+";'></div>                <div class='saved on' name='savedSub' style='background-color:"+clickedColor+";'></div>           <span name='savedSubText'>"+clickedColor.substring(1,7)+"</span>            </div>";
+                }
+            }
 
             function find() {
+                //saved 초기화
+                var table = document.getElementById('colorVariation');
+                var tdArr = table.getElementsByTagName('td');
+                for(var i=0; i<5; i++){
+                    x = i+6;
+                    tdArr[x].className = 'depth sub off';
+                }
+                
                 //텍스트박스의 값을 가져옴(읽어들임)
                 var key = document.getElementById("key").value;
                 var sub = document.getElementById("sub").value;
+                var bg = document.getElementById("bg").value;
                 
                 var varL = document.getElementById("lchl").value;
                 var varC = document.getElementById("lchc").value;
@@ -68,29 +113,56 @@
                 //tinycolor로 간단히 변환
                 var keyColor = tinycolor(key);
                 var subOriginColor = tinycolor(sub);
+                var bgColor = tinycolor(bg);
                 
-                changeBG('rect', 0, keyColor.toHexString());
-                changeBG('rect', 1, subOriginColor.toHexString());
+                changeBG('preview', 0, keyColor.toHexString(), 0);
+                changeBG('preview', 1, subOriginColor.toHexString(), 0);
+                var table = document.getElementsByName('CV')[0];
+                table.style.backgroundColor = bgColor;
                 
                 //color variation 만드는 부분
                 //이부분은 나중에 function으로 다시 만들것                
                 var varInt = 2;
                 
+                /*
                 var sub01Hexa = changeSub(subOriginColor.toHexString(), -(varL*varInt), -(varC*varInt), -(varH*varInt));
                 var sub02Hexa = changeSub(subOriginColor.toHexString(), -varL, -varC, -varH);
                 var sub03Hexa = changeSub(subOriginColor.toHexString(), +varL, +varC, +varH);                
                 var sub04Hexa = changeSub(subOriginColor.toHexString(), varL*varInt, varC*varInt, varH*varInt);
+                */
+                var subHex = [];
+                subHex[0] = changeSub(subOriginColor.toHexString(), -(varL*varInt), -(varC*varInt), -(varH*varInt));
+                subHex[1] = changeSub(subOriginColor.toHexString(), -varL, -varC, -varH);
+                subHex[3] = changeSub(subOriginColor.toHexString(), +varL, +varC, +varH);                
+                subHex[4] = changeSub(subOriginColor.toHexString(), varL*varInt, varC*varInt, varH*varInt);
                 
                 //original sub color
-                changeBG('variation', 2, subOriginColor.toHexString());
+                subHex[2] = subOriginColor.toHexString();
+                /*
+                changeBG('variation', 2, subOriginColor.toHexString(),0);
                 
                 //변경된 색상
-                changeBG('variation', 0, sub01Hexa);
-                changeBG('variation', 1, sub02Hexa);
-                changeBG('variation', 3, sub03Hexa);                
-                changeBG('variation', 4, sub04Hexa);
+                changeBG('variation', 0, sub01Hexa,0);
+                changeBG('variation', 1, sub02Hexa,0);
+                changeBG('variation', 3, sub03Hexa,0);
+                changeBG('variation', 4, sub04Hexa,0);
                 //이부분은 나중에 function으로 다시                
+                */
+                //SB: 반복을 없애도록 수정
+                for(var i=0; i<5; i++){
+                    changeBG('keycolor', i, keyColor.toHexString(), 0);
+                    changeBG('variation', i, subHex[i], 0);
+                    changeBG('variText', i, subHex[i], 1);
+                }
+                changeBG('bgcolor', 0, bgColor.toHexString(), 1);
                 
+                if(chroma(bgColor.toHexString()).get('lch.l') < 70){
+                    table.style.color = 'white';
+                }
+                else {
+                    table.style.color = 'black';
+                }
+
             }
             
                         
@@ -117,12 +189,25 @@
                 return toColorHexa.hex();                
             }
             
-            function changeBG(name,i,colorName){
+            /*function changeBG(name,i,colorName){
                 var obj = document.getElementsByName(name)[i];
                 obj.style.backgroundColor = colorName;
-                obj.innerHTML = colorName;
-            }
+            }*/
     
+            // 0: 색상만, 1: 텍스트만, 2: 둘다
+            function changeBG(name,i,colorName,flag){
+                var obj = document.getElementsByName(name)[i];
+                if(flag==0){
+                    obj.style.backgroundColor = colorName;
+                }
+                else if(flag==1){
+                    obj.innerHTML = colorName.substring(1,7);
+                }
+                else if(flag==2){
+                    obj.style.backgroundColor = colorName;
+                    obj.innerHTML = colorName;
+                }
+            }
         </script>
     </body>
 </html>
