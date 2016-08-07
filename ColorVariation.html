@@ -4,51 +4,69 @@
         <title>Color Variation by SBR</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="sbr.css">
+        <link href="color-picker.min.css" rel="stylesheet">
         <script type='text/javascript' src='chroma.js'></script>
         <script type='text/javascript' src='tinycolor.js'></script>
+        <script type="text/javascript" src="jquery-3.1.0.min.js"></script>
+        <!-- <script src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.js"></script>-->
+        <script type="text/javascript" src="color-picker.min.js"></script>
     </head>
     <body>
         <div id="media-320"></div>
         <div id="media-768"></div>
         <div id="media-1024"></div>
         <div id="media-1025"></div>
+        
+        <span class="subject">Automated color variation</span>
         <div class="operation">
-            <table class="mobile" border="0" cellspacing="10">
+            <table class="mobile" border="0" cellspacing="5">
                 <tr>
                     <td>Key Color : </td>
-                    <td># <input type="text" id="key" size="5" maxlength="7" value="0cbdc6" oninput="find();"/></td>
-                    <td name="preview" class="depth"></td>
+                    <td># <input type="text" id="key" class="color" size="5" maxlength="7" value="8080ff" oninput="find();"/></td>
+                    <td><div name="preview" class="preview color"></div></td>
+                    <td><img name="picker" class="color" src="img/ColorPicker_Icon.png"></td>
                 </tr>
                 <tr>
                     <td>Sub Color : </td>
-                    <td># <input type="text" id="sub" size="5" maxlength="7" value="0c60c6" oninput="find();"/></td>
-                    <td name="preview" class="depth"></td>
+                    <td># <input type="text" id="sub" size="5" maxlength="7" value="7eeadf" oninput="find();"/></td>
+                    <td><div name="preview" class="preview color"></div></td>
+                    <td><img name="picker" src="img/ColorPicker_Icon.png" class="color"></td>
                 </tr>
                 <tr>
                     <td>Background : </td>
-                    <td># <input type="text" id="bg" size="5" maxlength="7" value="eeeeee" oninput="find();"/></td>
-                    <td name="preview" class="depth"></td>
+                    <td># <input type="text" id="bg" size="5" maxlength="7" value="fafafa" oninput="find();"/></td>
+                    <td><div name="preview" class="preview"></div></td>
+                    <td><img src="img/ColorPicker_Icon.png" class="color"></td>
                 </tr>
             </table>
         </div>
 
-        <span class="subject">Input variable</span>
+        <span class="subject">Change sub color by</span>
         <div class="controller">
-            L : <input type="text" id="lchl" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
-            C : <input type="text" id="lchc" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
-            H : <input type="text" id="lchh" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
+            <table border="0" cellpadding="2">
+                <tr>
+                    <td>L(명도) : <input type="number" id="lchl" maxlength="3" value="5" oninput="find();"/></td>
+                    <td>C(채도) : <input type="number" id="lchc" maxlength="3" value="5" oninput="find();"/></td>
+                    <td>H(색상) : <input type="number" id="lchh" max="360" maxlength="3" value="5" oninput="find();"/></td>
+                </tr>
+                <tr>
+                    <td align="right"><input type="checkbox" name="reverse" value="L" onchange="find();">Reverse</td>
+                    <td align="right"><input type="checkbox" name="reverse" value="C" onchange="find();">Reverse</td>
+                    <td align="right"><input type="checkbox" name="reverse" value="H" onchange="find();">Reverse</td>
+                </tr>
+            </table>
             <!--<input type="button" id="exe" value="Start" onclick="find();"/>&nbsp; //-->
-            <br>&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="reverse" value="L" onchange="find();">Reverse
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" name="reverse" value="C" onchange="find();">Reverse
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox" name="reverse" value="H" onchange="find();">Reverse
-            <br>
-            <br>
         </div>
-        
+        <br>
+
         <span class="subject">Color Variation</span>
         <table id="colorVariation" name="CV" border="0" cellpadding="5" style="border-spacing:10px 0;">
             <tr>
-                <td name="bgcolor" colspan="5" valign="middle" style="text-align: center;">bgColor</td>
+                <td class="depth key" name="keyText" valign="middle"></td>
+                <td class="depth key" name="keyText" valign="middle"></td>
+                <td class="depth key" name="keyText" valign="middle"></td>
+                <td class="depth key" name="keyText" valign="middle"></td>
+                <td class="depth key" name="keyText" valign="middle"></td>
             </tr>
             <tr>
                 <td class="depth key" name="keycolor" valign="middle"></td>
@@ -58,11 +76,11 @@
                 <td class="depth key" name="keycolor" valign="middle"></td>
             </tr>
             <tr>
-                <td class="depth sub off" name="variation" valign="middle" onclick="save(6,1)"></td>
-                <td class="depth sub off" name="variation" valign="middle" onclick="save(7,1)"></td>
-                <td class="depth sub off" name="variation" valign="middle" onclick="save(8,1)"></td>
-                <td class="depth sub off" name="variation" valign="middle" onclick="save(9,1)"></td>
                 <td class="depth sub off" name="variation" valign="middle" onclick="save(10,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(11,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(12,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(13,1)"></td>
+                <td class="depth sub off" name="variation" valign="middle" onclick="save(14,1)"></td>
             </tr>
             <tr>
                 <td class="depth sub" name="variText" valign="middle"></td>
@@ -70,16 +88,39 @@
                 <td class="depth sub" name="variText" valign="middle"></td>
                 <td class="depth sub" name="variText" valign="middle"></td>
                 <td class="depth sub" name="variText" valign="middle"></td>
+            </tr>
+            <tr>
+                <td colspan="5"><div id="underLine" style="height:20px; border-bottom: 1px solid rgba(0, 0, 0, 0.2);"></div></td>
+            </tr>
+            <tr style="height: 30px;">
+                <td name="bgcolor" colspan="5" valign="middle" style="text-align: center;">bgColor</td>
             </tr>
         </table>
         <br>
-        <span class="subject">Saved</span>
+        <span id="savedTitle" class="subject"></span>
         <div id="saved">
         </div>
         
         <script type="text/javascript">
             window.onload = function() {
                 find();
+            }
+        
+            var buttons = document.querySelectorAll('img.color');
+            var previews = document.querySelectorAll('div.preview');
+            var colorList = ["#key", "#sub", "#bg"];
+            
+            function createPicker(obj, id) {
+                var picker = new CP(obj);
+                picker.on("drag", function(color) {
+                    document.querySelector(id).value = color;
+                    $("input[type='text']").trigger('input');
+                    //this.target.style.backgroundColor = '#' + color;
+                });
+            }
+            for(i=0; i<3; i++) {
+                createPicker(buttons[i], colorList[i]);
+                createPicker(previews[i], colorList[i]);
             }
             
             var mobile=0;
@@ -92,6 +133,10 @@
             var saved = [];
             
             function save(i,flag) {
+                if(count==0){
+                    document.getElementById('savedTitle').innerHTML = "Saved";
+                }
+                
                 var storage = document.getElementById('saved');
                 if(flag==0){
                     //saved.splice(i,1);
@@ -113,16 +158,19 @@
                 var clickedColor = tinycolor(clicked).toHexString();
                 var bgColor = tinycolor(bg).toHexString();
                 var bgColorText = chroma(bgColor).get('lch.l') < 70 ? 'white' : 'black';
+                var underLine = chroma(bgColor).get('lch.l') < 70 ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
                 
                 var responsive=100;
                 if(mobile==1) responsive=52;
                     
                 if(tdArr[i].className=='depth sub on'){
-                    saved[count] = "<div name='savedBG' style='text-align:center; width:"+responsive+"px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding:"+(mobile==0?10:7)+"px;'>\
-                    <span name='savedBGText'>"+bgColor.substring(1,7)+"</span>\
+                    saved[count] = "<div name='savedBG' style='text-align:center; width:"+responsive+"px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding-left:"+(mobile==0?10:7)+"px; padding-right:"+(mobile==0?10:7)+"px;'>\
+                    <div name='savedBGText' class='saved'>"+keyColor.substring(1,7)+"</div>\
                     <div class='saved' name='savedKey' style='width:"+responsive+"px; background-color:"+keyColor+";'></div>\
                     <div class='saved on' name='savedSub' style='width:"+responsive+"px; background-color:"+clickedColor+";' onclick='save("+count+",0)'></div>\
-                    <span name='savedSubText'>"+clickedColor.substring(1,7)+"</span>\
+                    <div name='savedSubText' class='saved'>"+clickedColor.substring(1,7)+"</div>\
+                    <div style='height:20px; border-bottom: 1px solid "+underLine+";'></div>\
+                    <div name='savedBGText' class='saved'>"+bgColor.substring(1,7)+"</div>\
                     </div>";
                     
                     var html = new String;
@@ -141,7 +189,7 @@
                 var table = document.getElementById('colorVariation');
                 var tdArr = table.getElementsByTagName('td');
                 for(var i=0; i<5; i++){
-                    x = i+6;
+                    x = i+10;
                     tdArr[x].className = 'depth sub off';
                 }
                 
@@ -208,6 +256,7 @@
                 //SB: 반복을 없애도록 수정
                 for(var i=0; i<5; i++){
                     changeBG('keycolor', i, keyColor.toHexString(), 0);
+                    changeBG('keyText', i, keyColor.toHexString(), 1);
                     changeBG('variation', i, subHex[i], 0);
                     changeBG('variText', i, subHex[i], 1);
                 }
@@ -215,9 +264,11 @@
                 
                 if(chroma(bgColor.toHexString()).get('lch.l') < 70){
                     table.style.color = 'white';
+                    document.getElementById('underLine').style.borderBottomColor='rgba(255, 255, 255, 0.2)';
                 }
                 else {
                     table.style.color = 'black';
+                    document.getElementById('underLine').style.borderBottomColor='rgba(0, 0, 0, 0.2)';
                 }
 
             }

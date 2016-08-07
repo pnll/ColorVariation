@@ -9,29 +9,43 @@ body { font-size:10pt; font-family:verdana,tahoma; }
     width: 100px;
     height: 20px;
 }
+.preview {
+    text-align: center;
+    width: 100px;
+    height: 20px;
+    border: 1px solid #d9d9d9;
+}
 .legend { height: 10px; font-size:8pt; }
-.operation { margin: 10px; }
+.operation { margin: 5px; }
 .off {
     background-image: url(img/default.png);
     background-repeat: no-repeat;
     background-position: bottom right;
-    background-size: 18px;
+    background-size: 30px;
 }
 .on {
     background-image: url(img/Saved.png);
     background-repeat: no-repeat;
     background-position: bottom right;
-    background-size: 18px;
+    background-size: 30px;
 }
 .saved {
-    width: 100px;
-    height: 25px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
 }
 .subject {
-    vertical-align: middle;
-    line-height:25px;
+    line-height:35px;
+    margin-top: 10px;
+    padding-top: 10px;
     font-size:8pt;
     font-weight: bold;
+}
+.color {
+    height: 20px;
+}
+input[type=number]{
+    width: 40px;
 }
 
 #media-320, #media-768, #media-1024, #media-1025 {
