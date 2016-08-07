@@ -2,13 +2,18 @@
 <html>
     <head>
         <title>Color Variation by SBR</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="sbr.css">
         <script type='text/javascript' src='chroma.js'></script>
         <script type='text/javascript' src='tinycolor.js'></script>
     </head>
     <body>
+        <div id="media-320"></div>
+        <div id="media-768"></div>
+        <div id="media-1024"></div>
+        <div id="media-1025"></div>
         <div class="operation">
-            <table border="0" cellspacing="10">
+            <table class="mobile" border="0" cellspacing="10">
                 <tr>
                     <td>Key Color : </td>
                     <td># <input type="text" id="key" size="5" maxlength="7" value="0cbdc6" oninput="find();"/></td>
@@ -27,7 +32,7 @@
             </table>
         </div>
 
-        <h5>Input variable</h5>
+        <span class="subject">Input variable</span>
         <div class="controller">
             L : <input type="text" id="lchl" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
             C : <input type="text" id="lchc" size="6" maxlength="7" value="10" oninput="find();"/>&nbsp;
@@ -40,7 +45,7 @@
             <br>
         </div>
         
-        <h5>Color Variation</h5>
+        <span class="subject">Color Variation</span>
         <table id="colorVariation" name="CV" border="0" cellpadding="5" style="border-spacing:10px 0;">
             <tr>
                 <td name="bgcolor" colspan="5" valign="middle" style="text-align: center;">bgColor</td>
@@ -67,14 +72,20 @@
                 <td class="depth sub" name="variText" valign="middle"></td>
             </tr>
         </table>
-        
-        <h5>Saved</h5>
+        <br>
+        <span class="subject">Saved</span>
         <div id="saved">
         </div>
         
         <script type="text/javascript">
             window.onload = function() {
                 find();
+            }
+            
+            var mobile=0;
+            var ua = window.navigator.userAgent;
+            if(/lgtelecom/i.test(ua) || /Android/i.test(ua) || /blackberry/i.test(ua) || /iPhone/i.test(ua) || /iPad/i.test(ua) || /samsung/i.test(ua) || /symbian/i.test(ua) || /sony/i.test(ua) || /SCH-/i.test(ua) || /SPH-/i.test(ua) || /nokia/i.test(ua) || /bada/i.test(ua) || /semc/i.test(ua) || /IEMobile/i.test(ua) || /Mobile/i.test(ua) || /PPC/i.test(ua) || /Windows CE/i.test(ua) || /Windows Phone/i.test(ua) || /webOS/i.test(ua) || /Opera Mini/i.test(ua) || /Opera Mobi/i.test(ua) || /POLARIS/i.test(ua) || /SonyEricsson/i.test(ua) || /symbos/i.test(ua)){
+                mobile=1;
             }
             
             var count = 0;
@@ -103,11 +114,14 @@
                 var bgColor = tinycolor(bg).toHexString();
                 var bgColorText = chroma(bgColor).get('lch.l') < 70 ? 'white' : 'black';
                 
+                var responsive=100;
+                if(mobile==1) responsive=52;
+                    
                 if(tdArr[i].className=='depth sub on'){
-                    saved[count] = "<div name='savedBG' style='text-align:center; width:100px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding:10px;'>\
+                    saved[count] = "<div name='savedBG' style='text-align:center; width:"+responsive+"px; background-color:"+bgColor+"; color:"+bgColorText+"; float: left; margin:1px; padding:"+(mobile==0?10:7)+"px;'>\
                     <span name='savedBGText'>"+bgColor.substring(1,7)+"</span>\
-                    <div class='saved' name='savedKey' style='background-color:"+keyColor+";'></div>\
-                    <div class='saved on' name='savedSub' style='background-color:"+clickedColor+";' onclick='save("+count+",0)'></div>\
+                    <div class='saved' name='savedKey' style='width:"+responsive+"px; background-color:"+keyColor+";'></div>\
+                    <div class='saved on' name='savedSub' style='width:"+responsive+"px; background-color:"+clickedColor+";' onclick='save("+count+",0)'></div>\
                     <span name='savedSubText'>"+clickedColor.substring(1,7)+"</span>\
                     </div>";
                     
