@@ -18,13 +18,13 @@ body { font-size:10pt; font-family:verdana,tahoma; }
 .legend { height: 10px; font-size:8pt; }
 .operation { margin-left: 5px; }
 .off {
-    background-image: url(img/default.png);
+    background-image: url(../img/default.png);
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: 30px;
 }
 .on {
-    background-image: url(img/Saved.png);
+    background-image: url(../img/Saved.png);
     background-repeat: no-repeat;
     background-position: bottom right;
     background-size: 30px;
@@ -78,6 +78,7 @@ input[type=number]{
 }
 
 /* iPads (portrait and landscape)  */
+/*
 @media only screen
 and (min-width : 768px)
 and (max-width : 1024px) {
@@ -88,7 +89,7 @@ and (max-width : 1024px) {
     width: 50px;
     height: 25px;
     }
-}
+}*/
 
 /* iPads (landscape)  */
 @media only screen
